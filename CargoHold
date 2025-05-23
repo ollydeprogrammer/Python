@@ -1,0 +1,75 @@
+import random 
+class Item:
+    def __init__(self, name: str, weight: int):
+        self.__name = name
+        self.__weight = weight
+
+    def name(self):
+        return self.__name  
+
+    def weight(self):
+        return self.__weight  
+
+    def __str__(self):
+        return f"{self.name()} ({self.weight()} kg)"
+
+class Suitcase:
+    def __init__(self, max_weight: int):  
+        self.__max = max_weight
+        self.__suitcase = []  
+        self.__weight = 0
+    
+    def add_item(self, item: Item):
+        if self.__weight + item.weight() <= self.__max:  
+            self.__suitcase.append(item)
+            self.__weight += item.weight()
+
+        
+    def print_items(self):
+        sorted_case = sorted(self.__suitcase, key=lambda item: item.name())  
+        for item in sorted_case:
+            print(item)
+
+    def weight(self):
+        return self.__weight
+    
+    def heaviest_item(self):
+        if not self.__suitcase:  
+            return None
+
+        heaviest = max(item.weight() for item in self.__suitcase)
+        heaviest_items = [item for item in self.__suitcase if item.weight() == heaviest]
+        return random.choice(heaviest_items)
+    
+  
+    def __str__(self):
+        if len(self.__suitcase) == 1:
+            return f"{len(self.__suitcase)} item ({self.__weight} kg)"  
+        else:
+            return f"{len(self.__suitcase)} items ({self.__weight} kg)"  
+        
+
+
+class CargoHold:
+    def __init__(self, max_weight : int):
+        self.__max_weight = max_weight
+        self.__hold = []
+        self.__weight = 0
+    
+    def add_suitcase(self, suitcase: Suitcase):
+        if self.__weight + suitcase.weight() <= self.__max_weight:  
+            self.__hold.append(suitcase)
+            self.__weight += suitcase.weight()
+    
+    def __str__(self):
+        if len(self.__hold) == 1:
+            return f"{len(self.__hold)} suitcase, space for {self.__max_weight - self.__weight} kg"
+        else:
+            return f"{len(self.__hold)} suitcases, space for {self.__max_weight - self.__weight} kg"
+
+
+    def print_items(self):
+        for suitcase in self.__hold:
+            suitcase.print_items()
+
+    
