@@ -1,0 +1,49 @@
+class SimpleDate:
+    def __init__(self, day:int, month:int, year:int):
+        if 1<= day <= 30: 
+            self._day = day
+        if 1<= month <=12:    
+            self._month = month
+        if 0< year:
+            self._year = year
+    
+    def __eq__(self, another):
+        return (self._day, self._month, self._year) == (another._day, another._month, another._year)
+    
+    def __lt__(self,another):
+        return (self._year, self._month, self._day) < (another._year, another._month,another._day)
+    
+    def __gt__(self,another):
+        return (self._year, self._month, self._day) > (another._year, another._month, another._day)
+
+    def __add__(self, another):
+        total_days = self._year * 360 + self._month * 30 + self._day + another 
+    
+        new_year = total_days // 360
+        remaining_days = total_days % 360
+        new_month = remaining_days // 30
+        new_day = remaining_days % 30
+
+        if new_day == 0:
+            new_day = 30
+            new_month -= 1
+
+        if new_month == 0:
+            new_month = 12
+            new_year -= 1
+
+        return SimpleDate(new_day, new_month, new_year)
+    
+    def __sub__(self, another):
+        self_total_days = self._year * 360 + self._month * 30 + self._day 
+        another_total_days = another._year * 360 + another._month * 30 + another._day
+        difference = abs(self_total_days - another_total_days)
+
+        return difference
+
+
+
+
+
+    def __str__(self):
+        return f"{self._day}.{self._month}.{self._year}"
